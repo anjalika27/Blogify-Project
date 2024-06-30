@@ -1,25 +1,25 @@
-require("dotenv").config();
+mongoose.set('strictQuery', false)
+import path from "path"
+import express from "express"
+import mongoose from "mongoose";
+import cookiePaser from "cookie-parser";
 
-const path = require("path");
-const express = require("express");
-const mongoose = require("mongoose");
-const cookiePaser = require("cookie-parser");
-mongoose.set('strictQuery', false);
+import dotenv from "dotenv"
+dotenv.config();
 
-const Blog = require("./models/blog");
+import Blog from "./models/blog.js"
 
-const userRoute = require("./routes/user");
-const blogRoute = require("./routes/blog");
-const {
-  checkForAuthenticationCookie,
-} = require("./middlewares/authentication");
+import userRoute from "./routes/user.js"
+import blogRoute from "./routes/blog.js"
+import checkForAuthenticationCookie from "./middlewares/authentication.js"
 
 const app = express();
 const PORT = process.env.PORT || 8000;
 
 mongoose
-  .connect(process.env.MONGO_URL)
+  .connect(process.env.MONGO_URL, { dbName: "database", useNewUrlParser: true })
   .then((e) => console.log("MongoDB Connected"));
+
 
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));

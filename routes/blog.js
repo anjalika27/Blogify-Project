@@ -1,9 +1,12 @@
-const { Router } = require("express");
-const multer = require("multer");
-const path = require("path");
 
-const Blog = require("../models/blog");
-const Comment = require("../models/comment");
+import { Router } from "express"
+import multer from "multer";
+import path from "path"
+import uploadFileOnCloudinary from "../services/cloudinary.js";
+
+
+import Comment from "../models/comment.js"
+import Blog from "../models/blog.js"
 
 const router = Router();
 
@@ -12,7 +15,7 @@ const storage = multer.diskStorage({
     cb(null, path.resolve(`./public/uploads/`));
   },
   filename: function (req, file, cb) {
-    const fileName = `${Date.now()}-${file.originalname}`;
+    const fileName = `${file.originalname}`;
     cb(null, fileName);
   },
 });
@@ -47,15 +50,20 @@ router.post("/comment/:blogId", async (req, res) => {
   return res.redirect(`/blog/${req.params.blogId}`);
 });
 
+
 router.post("/", upload.single("coverImage"), async (req, res) => {
   const { title, body } = req.body;
+
+  const response = await uploadFileOnCloudinary(req.file.path)
+  // console.log(response);
+
   const blog = await Blog.create({
     body,
     title,
     createdBy: req.user._id,
-    coverImageURL: `/uploads/${req.file.filename}`,
+    coverImageURL: response.url,
   });
   return res.redirect(`/blog/${blog._id}`);
 });
 
-module.exports = router;
+export default router

@@ -1,6 +1,7 @@
-const { createHmac, randomBytes } = require("crypto");
-const { Schema, model } = require("mongoose");
-const { createTokenForUser } = require("../services/authentication");
+
+import { createHmac,randomBytes } from "crypto";
+import {Schema, model} from "mongoose"
+import { createTokenForUser } from "../services/authentication.js";
 
 const userSchema = new Schema(
   {
@@ -72,4 +73,5 @@ userSchema.static(
 
 const User = model("user", userSchema);
 
-module.exports = User;
+export default User
+

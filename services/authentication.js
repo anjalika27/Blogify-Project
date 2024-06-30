@@ -1,4 +1,5 @@
-const JWT = require("jsonwebtoken");
+
+import JWT from "jsonwebtoken"
 
 const secret = "$uperMan@123";
 
@@ -18,7 +19,4 @@ function validateToken(token) {
   return payload;
 }
 
-module.exports = {
-  createTokenForUser,
-  validateToken,
-};
+export { createTokenForUser, validateToken }

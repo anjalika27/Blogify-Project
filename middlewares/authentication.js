@@ -1,5 +1,5 @@
-const { validateToken } = require("../services/authentication");
 
+import { validateToken } from "../services/authentication.js";
 function checkForAuthenticationCookie(cookieName) {
   return (req, res, next) => {
     const tokenCookieValue = req.cookies[cookieName];
@@ -15,7 +15,4 @@ function checkForAuthenticationCookie(cookieName) {
     return next();
   };
 }
-
-module.exports = {
-  checkForAuthenticationCookie,
-};
+export default checkForAuthenticationCookie
